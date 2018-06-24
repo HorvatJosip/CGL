@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.1.0</Version>
+    <Authors>Josip Horvat</Authors>
+    <Company>Josip Horvat</Company>
+    <Description>C# Standard Library used to make console games in C#</Description>
+    <Copyright>Copyright ©  2018</Copyright>
+    <PackageProjectUrl>https://github.com/HorvatJosip/CGL</PackageProjectUrl>
+    <PackageTags>C# dotnet .NET Standard Console Game Library Games CGL</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\CGL.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>

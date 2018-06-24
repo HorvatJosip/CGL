@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>CGL</id>
+    <version>1.1.0</version>
+    <authors>Josip Horvat</authors>
+    <owners>Josip Horvat</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/HorvatJosip/CGL</projectUrl>
+    <description>C# Standard Library used to make console games in C#</description>
+    <copyright>Copyright ©  2018</copyright>
+    <tags>C# dotnet .NET Standard Console Game Library Games CGL</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\bin\Debug\netstandard2.0\CGL.dll" target="lib\netstandard2.0\CGL.dll" />
+    <file src="F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\bin\Debug\netstandard2.0\CGL.xml" target="lib\netstandard2.0\CGL.xml" />
+  </files>
+</package>

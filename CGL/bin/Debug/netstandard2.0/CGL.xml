@@ -1,0 +1,1865 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CGL</name>
+    </assembly>
+    <members>
+        <member name="T:CGL.DataPersistence.FileManager">
+            <summary>
+            Used for defining working directory and serializing / deserializing inside it
+            </summary>
+        </member>
+        <member name="P:CGL.DataPersistence.FileManager.DirectoryPath">
+            <summary>
+            Path to the directory where the files are located
+            </summary>
+        </member>
+        <member name="M:CGL.DataPersistence.FileManager.GetFilePath(System.String)">
+            <summary>
+            Gets a file path based on a given file name or file path.
+            <para>If a path to a file is passed in, it is just returned, otherwise
+            it will be combined with the <see cref="P:CGL.DataPersistence.FileManager.DirectoryPath"/>.</para>
+            </summary>
+            <param name="file">File name or file path</param>
+            <exception cref="T:System.ArgumentException"/>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.DataPersistence.FileManager.LoadData``1(System.String)">
+            <summary>
+            Loads serialized data from a file
+            </summary>
+            <typeparam name="T">Type of the object that is serialized in the given file</typeparam>
+            <param name="file">File name or file path</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.DataPersistence.FileManager.SaveData(System.String,System.Object)">
+            <summary>
+            Serializes an object to a file
+            </summary>
+            <param name="file">File name or file path</param>
+            <param name="data">Object with data to serialize (make sure it is marked with <see cref="T:System.SerializableAttribute"/>)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.DataPersistence.SaveSystem`1">
+            <summary>
+            Used for managing saves (using <see cref="T:CGL.DataPersistence.FileManager"/> to manage save files)
+            </summary>
+            <typeparam name="T">Type of object that holds save information</typeparam>
+        </member>
+        <member name="P:CGL.DataPersistence.SaveSystem`1.Saves">
+            <summary>
+            Deserialized objects from files (in <see cref="P:CGL.DataPersistence.FileManager.DirectoryPath"/> with extension given at constructor)
+            </summary>
+        </member>
+        <member name="M:CGL.DataPersistence.SaveSystem`1.#ctor(System.String)">
+            <summary>
+            Generates a <see cref="T:CGL.DataPersistence.SaveSystem`1"/> instance with the specified file extension.
+            Save files in the default directory (<see cref="P:CGL.DataPersistence.FileManager.DirectoryPath"/>) with the given extension
+            are loaded into <see cref="P:CGL.DataPersistence.SaveSystem`1.Saves"/> collection.
+            </summary>
+            <param name="fileExtension">File extensions for the save files</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.DataPersistence.SaveSystem`1.#ctor(System.String,System.String)">
+            <summary>
+            Generates a <see cref="T:CGL.DataPersistence.SaveSystem`1"/> instance with the specified directory path and file extension.
+            Save files in the specified directory (that overrides <see cref="P:CGL.DataPersistence.FileManager.DirectoryPath"/> value) with the 
+            given extension are loaded into <see cref="P:CGL.DataPersistence.SaveSystem`1.Saves"/> collection.
+            </summary>
+            <param name="directoryPath">Path to the directory that stores save files</param>
+            <param name="fileExtension">File extensions for the save files</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.DataPersistence.SaveSystem`1.EditSaves(CGL.EditOperation,System.String,`0)">
+            <summary>
+            Performs an operation on the save files:
+            <para><see cref="F:CGL.EditOperation.Create"/>: adds a new save</para>
+            <para><see cref="F:CGL.EditOperation.Update"/>: updates an existing save</para>
+            <para><see cref="F:CGL.EditOperation.Delete"/>: deletes a save (this doesn't require <paramref name="data"/> parameter)</para>
+            <para><see cref="F:CGL.EditOperation.UpdateOrCreate"/>: if the save file already exists, it updates it, 
+            otherwise, it creates a new one</para>
+            </summary>
+            <param name="operation">Edit operation to perform</param>
+            <param name="fileName">Name of the file to save the data to</param>
+            <param name="data">Data that is serialized to the file (not required for deleting a save)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.DataPersistence.SaveSystem`1.Save">
+            <summary>
+            Serializes the data from saves to their respectful file paths.
+            <para>This method should be called only when you want to serialize all of the saves</para>
+            </summary>
+        </member>
+        <member name="M:CGL.DataPersistence.SaveSystem`1.Save(System.Int32)">
+            <summary>
+            Serializes a save at the specific index in the <see cref="P:CGL.DataPersistence.SaveSystem`1.Saves"/> collection.
+            </summary>
+            <param name="saveIndex">Index of the save to serialize</param>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="T:CGL.Board.Board">
+            <summary>
+            Represents a terrain on which the game is played
+            </summary>
+        </member>
+        <member name="P:CGL.Board.Board.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets an entity from the board at the specified position
+            </summary>
+            <param name="x">X coordinate of the entity</param>
+            <param name="y">Y coordinate of the entity</param>
+            <returns></returns>
+        </member>
+        <member name="P:CGL.Board.Board.Item(CGL.Position)">
+            <summary>
+            Gets an entity from the board at the specified position
+            </summary>
+            <param name="position">Position of the entity</param>
+        </member>
+        <member name="P:CGL.Board.Board.TerrainBounds">
+            <summary>
+            Represents how far does the map stretch on the X and Y axis
+            </summary>
+        </member>
+        <member name="P:CGL.Board.Board.DrawableArea">
+            <summary>
+            Area that is printed on the screen
+            </summary>
+        </member>
+        <member name="P:CGL.Board.Board.ReplacementTile">
+            <summary>
+            Tile that is used to replace a tile that gets removed (can be left null so that
+            nothing replaces the removed tile)
+            </summary>
+        </member>
+        <member name="E:CGL.Board.Board.EntityAboutToMove">
+            <summary>
+            Triggered when an entity is about to move
+            </summary>
+        </member>
+        <member name="E:CGL.Board.Board.EntityMoved">
+            <summary>
+            Triggered when an entity successfully finishes the movement
+            </summary>
+        </member>
+        <member name="M:CGL.Board.Board.#ctor(CGL.Rectangle)">
+            <summary>
+            Generates a <see cref="T:CGL.Board.Board"/> instance with the given drawable area.
+            </summary>
+            <param name="drawableArea">Area that is printed on the screen</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Board.Board.#ctor(CGL.Rectangle,System.Collections.Generic.IEnumerable{CGL.Entities.Entity})">
+            <summary>
+            Generates a <see cref="T:CGL.Board.Board"/> instance with the given drawable area and entities
+            that will be placed onto the board (and drawn if they are inside the drawable area).
+            </summary>
+            <param name="drawableArea">Area that is printed on the screen</param>
+            <param name="entities">Entities that will be placed onto the board (and drawn if they are inside the drawable area)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Board.Board.Draw">
+            <summary>
+            Clears the drawable area and draws all the entities
+            </summary>
+        </member>
+        <member name="M:CGL.Board.Board.DrawPart(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draws a part of the board that resideds in the specified bounds
+            </summary>
+            <param name="startX">X coordinate where the drawing should start</param>
+            <param name="endX">X coordinate where the drawing should end</param>
+            <param name="startY">Y coordinate where the drawing should start</param>
+            <param name="endY">Y coordinate where the drawing should end</param>
+            <returns></returns>
+        </member>
+        <member name="M:CGL.Board.Board.DrawPart(CGL.Bounds2D)">
+            <summary>
+            Draws a part of the board that resideds in the specified bounds
+            </summary>
+            <param name="bounds">Area that needs to be printed</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Board.Board.Move(CGL.Direction,System.Int32,System.Boolean)">
+            <summary>
+            Moves the board in a given direction
+            </summary>
+            <param name="direction">Direction to move the board in</param>
+            <param name="count">How much should the board be moved in the given direction</param>
+            <param name="drawAfter">Should the board be redrawn after it has been moved</param>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Board.Board.MoveEntity(CGL.Entities.Entity,CGL.Direction,System.Int32)">
+            <summary>
+            Moves an entity in a certain direction
+            </summary>
+            <param name="entity">Entity to move</param>
+            <param name="direction">Direction to move it in</param>
+            <param name="amount">How many tiles should it be moved in that direction</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Board.Board.MoveEntity(CGL.Entities.Entity,CGL.Position)">
+            <summary>
+            Moves an entity to a certain position
+            </summary>
+            <param name="entity">Entity to move</param>
+            <param name="position">Position to move the entity to</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Board.Board.MoveEntityInRandomDirection(CGL.Entities.Entity,System.Int32)">
+            <summary>
+            Moves an entity in a random direction
+            </summary>
+            <param name="entity">Entity to move</param>
+            <param name="amount">How many tiles should it be moved in that direction</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Board.Board.EditEntities(CGL.Entities.Entity,CGL.EditOperation)">
+            <summary>
+            Performs an operation on the entities:
+            <para><see cref="F:CGL.EditOperation.Create"/>: adds a new entity</para>
+            <para><see cref="F:CGL.EditOperation.Update"/>: updates an existing entity (based on <see cref="P:CGL.Entities.Entity.Position"/>)</para>
+            <para><see cref="F:CGL.EditOperation.Delete"/>: deletes an entity</para>
+            <para><see cref="F:CGL.EditOperation.UpdateOrCreate"/>: if the entity already exists, it updates it, 
+            otherwise, it creates a new one</para>
+            </summary>
+            <param name="entity">Entity used in the edit operation</param>
+            <param name="operation">Edit operation to perform</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Board.Board.GetRandomSpawnPoint(System.Int32,System.Int32,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            Generates a spawn point at random based on the given parameters
+            </summary>
+            <param name="walkabilityMinimumPercentage">Minimum percentage (from 0 to 100) that needs
+            to be walkable (<see cref="F:CGL.Board.TileType.Walkable"/>) around the position that was randomly picked</param>
+            <param name="walkabilityCheckRadius">Radius of tiles checked for walkability (at least 1).
+            Example: if the given radius is 1, only the 8 neighbour tiles will be checked for walkability</param>
+            <param name="useEmptySpotsIntoAccount">If a tile doesn't exist, should it be taken into account?
+            Example: imagine being in the corner of the map and the specified radius is 1. If this is set to true,
+            there will be 8 tiles to check, otherwise just 3</param>
+            <param name="tileHasToBeWalkable">Should the position returned be walkable or not</param>
+            <param name="triesAllowed">Number of tries (at least 1) allowed until the position with the given
+            arguments is found (if the try count reaches this number, null is returned)</param>
+        </member>
+        <member name="M:CGL.Board.Board.Contains(CGL.Graphics)">
+            <summary>
+            Checks if an entity with the given graphics exists
+            </summary>
+            <param name="graphics">Graphics of the entity to find</param>
+        </member>
+        <member name="T:CGL.Board.Tile">
+            <summary>
+            Unit on the terrain (<see cref="T:CGL.Board.Board"/>)
+            </summary>
+        </member>
+        <member name="P:CGL.Board.Tile.Type">
+            <summary>
+            Type of this tile
+            </summary>
+        </member>
+        <member name="P:CGL.Board.Tile.Contents">
+            <summary>
+            Object that lies on this tile
+            </summary>
+        </member>
+        <member name="M:CGL.Board.Tile.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Board.Tile"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Board.Tile.#ctor(CGL.Board.TileType,CGL.Graphics)">
+            <summary>
+            Generates a <see cref="T:CGL.Board.Tile"/> instance with the specified type and graphics
+            </summary>
+            <param name="type">Type of the tile</param>
+            <param name="graphics">Tile graphics</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Board.Tile.#ctor(CGL.Board.Tile,CGL.Position)">
+            <summary>
+            Generates a <see cref="T:CGL.Board.Tile"/> based on an existing tile, but at a new location
+            </summary>
+            <param name="tile">Tile with its type and graphics specified</param>
+            <param name="newPosition">The new position of the given tile</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Board.Tile.#ctor(CGL.Board.TileType,CGL.Graphics,CGL.Position)">
+            <summary>
+            Generates a <see cref="T:CGL.Board.Tile"/> instance with the specified type and graphics at a specified location
+            </summary>
+            <param name="type">Type of the tile</param>
+            <param name="graphics">Tile graphics</param>
+            <param name="position">Tile's location on the map</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Board.Tile.#ctor(CGL.Board.TileType,CGL.Entities.Entity)">
+            <summary>
+            Generates a <see cref="T:CGL.Board.Tile"/> instance with the specified type and graphics and position
+            from an existing entity
+            </summary>
+            <param name="type">Type of the tile</param>
+            <param name="entity">Entity whose graphics and position will be used for this tile</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.Board.TileType">
+            <summary>
+            Flags that define the type of a certain <see cref="T:CGL.Board.Tile"/>
+            </summary>
+        </member>
+        <member name="F:CGL.Board.TileType.None">
+            <summary>
+            No type
+            </summary>
+        </member>
+        <member name="F:CGL.Board.TileType.Walkable">
+            <summary>
+            Entities can walk on the tile
+            </summary>
+        </member>
+        <member name="F:CGL.Board.TileType.Gatherable">
+            <summary>
+            Entities can gather something from the tile
+            </summary>
+        </member>
+        <member name="F:CGL.Board.TileType.Interactable">
+            <summary>
+            Something happens when an entity hits the tile
+            </summary>
+        </member>
+        <member name="F:CGL.Board.TileType.Custom">
+            <summary>
+            For custom logic
+            </summary>
+        </member>
+        <member name="T:CGL.Characters.Character">
+            <summary>
+            Simple character base (has HP, MP and movement speed)
+            </summary>
+        </member>
+        <member name="P:CGL.Characters.Character.MaxHP">
+            <summary>
+            Health / Hit Points maximum
+            </summary>
+        </member>
+        <member name="P:CGL.Characters.Character.HP">
+            <summary>
+            Health / Hit Points
+            </summary>
+        </member>
+        <member name="P:CGL.Characters.Character.MaxMP">
+            <summary>
+            Mana Points maximum
+            </summary>
+        </member>
+        <member name="P:CGL.Characters.Character.MP">
+            <summary>
+            Mana Points
+            </summary>
+        </member>
+        <member name="P:CGL.Characters.Character.MovementSpeed">
+            <summary>
+            Number of tiles this character can traverse at once
+            </summary>
+        </member>
+        <member name="M:CGL.Characters.Character.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Characters.Character"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Characters.Character.#ctor(CGL.Graphics,CGL.Position)">
+            <summary>
+            Generates a <see cref="T:CGL.Characters.Character"/> instance with specified graphics and position
+            and the default stats
+            </summary>
+            <param name="graphics">Character's graphics</param>
+            <param name="position">Character's position</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Characters.Character.#ctor(CGL.Graphics,CGL.Position,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Generates a <see cref="T:CGL.Characters.Character"/> instance with specified graphics, position and stats
+            </summary>
+            <param name="graphics">Character's graphics</param>
+            <param name="position">Character's position</param>
+            <param name="hp">Character's Health Points total</param>
+            <param name="mana">Character's Mana Points total</param>
+            <param name="movementSpeed">Character's movement speed</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Characters.Character.TakeDamage(System.Int32)">
+            <summary>
+            Causes the character to lose hp. The method returns true if the character is dead
+            </summary>
+            <param name="amount">Damage amount that the character will take</param>
+        </member>
+        <member name="T:CGL.Entities.Entity">
+            <summary>
+            Base for anything that exists within the game
+            </summary>
+        </member>
+        <member name="P:CGL.Entities.Entity.Graphics">
+            <summary>
+            Graphics used to draw the entity
+            </summary>
+        </member>
+        <member name="P:CGL.Entities.Entity.Position">
+            <summary>
+            Location where the entity should be drawn
+            </summary>
+        </member>
+        <member name="P:CGL.Entities.Entity.X">
+            <summary>
+            X coordinate of the <see cref="P:CGL.Entities.Entity.Position"/>
+            </summary>
+            <exception cref="T:System.NullReferenceException"/>
+        </member>
+        <member name="P:CGL.Entities.Entity.Y">
+            <summary>
+            Y coordinate of the <see cref="P:CGL.Entities.Entity.Position"/>
+            </summary>
+            <exception cref="T:System.NullReferenceException"/>
+        </member>
+        <member name="M:CGL.Entities.Entity.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Entities.Entity"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Entities.Entity.#ctor(CGL.Graphics,CGL.Position)">
+            <summary>
+            Generates an <see cref="T:CGL.Entities.Entity"/> instance with specified graphics and position
+            </summary>
+            <param name="graphics">Graphics used to draw the entity</param>
+            <param name="position">Location where the entity should be drawn</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Entities.Entity.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object
+            </summary>
+            <param name="obj">The object to compare with the current object</param>
+        </member>
+        <member name="M:CGL.Entities.Entity.op_Equality(CGL.Entities.Entity,CGL.Entities.Entity)">
+            <summary>
+            Determines whether the specified object instances are considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Entities.Entity.op_Inequality(CGL.Entities.Entity,CGL.Entities.Entity)">
+            <summary>
+            Determines whether the specified object instances are not considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Entities.Entity.GetHashCode">
+            <summary>
+            Returns the hash code for the value of this instance
+            </summary>
+        </member>
+        <member name="M:CGL.Entities.Entity.ToString">
+            <summary>
+            Returns a string that represents the current object
+            </summary>
+        </member>
+        <member name="T:CGL.Menus.LabelledMenuOption">
+            <summary>
+            Menu option that has text (a label) as its representation
+            </summary>
+        </member>
+        <member name="M:CGL.Menus.LabelledMenuOption.#ctor(System.String,System.Action)">
+            <summary>
+            Generates a <see cref="T:CGL.Menus.LabelledMenuOption"/> instance with the given label and action
+            </summary>
+            <param name="label">Label of the menu option</param>
+            <param name="action">Action to perform when this option is chosen</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.Menus.Menu">
+            <summary>
+            List of options that the user can pick
+            </summary>
+        </member>
+        <member name="P:CGL.Menus.Menu.Parent">
+            <summary>
+            Parent of the current menu, for example, Main menu can be parent of the Options menu
+            </summary>
+        </member>
+        <member name="P:CGL.Menus.Menu.Options">
+            <summary>
+            List of options that the user can choose from
+            </summary>
+        </member>
+        <member name="P:CGL.Menus.Menu.Title">
+            <summary>
+            Title of the menu
+            </summary>
+        </member>
+        <member name="M:CGL.Menus.Menu.#ctor">
+            <summary>
+            Generates a <see cref="T:CGL.Menus.Menu"/> instance with no options to choose from
+            </summary>
+        </member>
+        <member name="M:CGL.Menus.Menu.#ctor(System.Collections.Generic.IEnumerable{CGL.Menus.MenuOption})">
+            <summary>
+            Generates a <see cref="T:CGL.Menus.Menu"/> instance with specified options
+            </summary>
+            <param name="options">List of options that the user can choose from</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Menus.Menu.Print">
+            <summary>
+            Clears the console and prints the menu using the
+            <see cref="M:CGL.Extensions.ChooseOption``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Boolean,System.String,System.Boolean)"/> method
+            and executes the chosen option
+            </summary>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.Menus.MenuOption">
+            <summary>
+            An option inside the <see cref="T:CGL.Menus.Menu"/>
+            </summary>
+        </member>
+        <member name="P:CGL.Menus.MenuOption.Label">
+            <summary>
+            Label of the menu option
+            </summary>
+        </member>
+        <member name="P:CGL.Menus.MenuOption.Action">
+            <summary>
+            Action that is executed when the menu option is chosen
+            </summary>
+        </member>
+        <member name="M:CGL.Menus.MenuOption.#ctor(System.String,System.Action)">
+            <summary>
+            Generates a <see cref="T:CGL.Menus.MenuOption"/> instance with the given label and action
+            </summary>
+            <param name="label">Label of the menu option</param>
+            <param name="action">Action that is executed when the menu option is chosen</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Menus.MenuOption.ToString">
+            <summary>
+            Returns a string that represents the current object
+            </summary>
+        </member>
+        <member name="T:CGL.Menus.MenuSystem`1">
+            <summary>
+            Manager for <see cref="T:CGL.Menus.Menu"/>s
+            </summary>
+            <typeparam name="TKey">Key type, unique identifiers for each menu</typeparam>
+        </member>
+        <member name="P:CGL.Menus.MenuSystem`1.Item(`0)">
+            <summary>
+            Gets a menu at the given key
+            </summary>
+            <param name="key">Key to use to find the menu</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Menus.MenuSystem`1.EditMenus(CGL.EditOperation,`0,CGL.Menus.Menu)">
+            /// <summary>
+            Performs an operation on the menus:
+            <para><see cref="F:CGL.EditOperation.Create"/>: adds a new menu</para>
+            <para><see cref="F:CGL.EditOperation.Update"/>: updates an existing menu</para>
+            <para><see cref="F:CGL.EditOperation.Delete"/>: deletes a menu (this doesn't require <paramref name="menu"/> parameter)</para>
+            <para><see cref="F:CGL.EditOperation.UpdateOrCreate"/>: if the menu already exists, it updates it, 
+            otherwise, it creates a new one</para>
+            </summary>
+            <param name="operation">Edit operation to perform</param>
+            <param name="menuKey">Key of the menu</param>
+            <param name="menu">The menu itself</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="T:CGL.Printables.Drawable">
+            <summary>
+            An object that just derives from the abstract class <see cref="T:CGL.Entities.Entity"/>
+            for drawing purposes. It doesn't implement any special logic.
+            </summary>
+        </member>
+        <member name="M:CGL.Printables.Drawable.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Printables.Drawable"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Printables.Drawable.#ctor(CGL.Graphics,CGL.Position)">
+            <summary>
+            Generates a <see cref="T:CGL.Printables.Drawable"/> instance with the specified graphics and position
+            </summary>
+            <param name="graphics">Graphics of the letter</param>
+            <param name="position">The letter's location</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.Printables.MessageBoard">
+            <summary>
+            Area used for printing messages (wrapped, they appear from top to bottom)
+            </summary>
+        </member>
+        <member name="P:CGL.Printables.MessageBoard.DrawableArea">
+            <summary>
+            Area that is printed on the screen
+            </summary>
+        </member>
+        <member name="M:CGL.Printables.MessageBoard.#ctor(CGL.Rectangle)">
+            <summary>
+            Generates a <see cref="T:CGL.Printables.MessageBoard"/> instance with the given drawable area
+            </summary>
+            <param name="drawableArea">Area that is printed on the screen</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.MessageBoard.AddMessage(CGL.Printables.Text,System.Boolean)">
+            <summary>
+            Adds a new message to the top of the message board. If the message board is full, messages
+            that aren't displayed are removed
+            </summary>
+            <param name="message">Message to add to the message board</param>
+            <param name="drawMessages">Should the messages be redrawn</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.MessageBoard.DrawMessages">
+            <summary>
+            Clears the drawable area and draws all the messages
+            </summary>
+        </member>
+        <member name="T:CGL.Printables.PrintableArea`1">
+            <summary>
+            Area with fixed and dynamic texts (e.g. player stats)
+            </summary>
+            <typeparam name="TKey">Key type, unique identifiers for each text</typeparam>
+        </member>
+        <member name="P:CGL.Printables.PrintableArea`1.Item(`0,System.Boolean)">
+            <summary>
+            Gets a text from one of the collections
+            </summary>
+            <param name="key">Key for the certain collection</param>
+            <param name="getChangableText">Should the changable text collection be used or the fixed text collection</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="P:CGL.Printables.PrintableArea`1.DrawableArea">
+            <summary>
+            Area that is printed on the screen
+            </summary>
+        </member>
+        <member name="M:CGL.Printables.PrintableArea`1.#ctor(CGL.Rectangle)">
+            <summary>
+            Generates a <see cref="T:CGL.Printables.PrintableArea`1"/> instance with the given drawable area.
+            </summary>
+            <param name="drawableArea">Area that is printed on the screen</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.PrintableArea`1.EditChangableText(CGL.EditOperation,`0,CGL.Printables.Text,System.Boolean)">
+            <summary>
+            Performs an operation on the changable text collection:
+            <para><see cref="F:CGL.EditOperation.Create"/>: adds a new text</para>
+            <para><see cref="F:CGL.EditOperation.Update"/>: updates an existing text</para>
+            <para><see cref="F:CGL.EditOperation.Delete"/>: deletes a text object</para>
+            <para><see cref="F:CGL.EditOperation.UpdateOrCreate"/>: if the text already exists, it updates it, 
+            otherwise, it creates a new one</para>
+            </summary>
+            <param name="operation">Edit operation to perform</param>
+            <param name="key">Unique identifier of the text object</param>
+            <param name="text">Text to edit (not needed for deletion)</param>
+            <param name="draw">Should the text collection be redrawn after the edit</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Printables.PrintableArea`1.EditFixedText(CGL.EditOperation,`0,CGL.Printables.Text,System.Boolean)">
+            <summary>
+            Performs an operation on the fixed text collection:
+            <para><see cref="F:CGL.EditOperation.Create"/>: adds a new text</para>
+            <para><see cref="F:CGL.EditOperation.Update"/>: updates an existing text</para>
+            <para><see cref="F:CGL.EditOperation.Delete"/>: deletes a text object</para>
+            <para><see cref="F:CGL.EditOperation.UpdateOrCreate"/>: if the text already exists, it updates it, 
+            otherwise, it creates a new one</para>
+            </summary>
+            <param name="operation">Edit operation to perform</param>
+            <param name="key">Unique identifier of the text object</param>
+            <param name="text">Text to edit (not needed for deletion)</param>
+            <param name="draw">Should the text collection be redrawn after the edit</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Printables.PrintableArea`1.RedrawAll(System.Boolean)">
+            <summary>
+            Redraws both text collections
+            </summary>
+            <param name="clearDrawableArea">Should the drawable area be cleared before the redraw</param>
+        </member>
+        <member name="M:CGL.Printables.PrintableArea`1.Redraw(System.Boolean,System.Boolean)">
+            <summary>
+            Redraws a text collection
+            </summary>
+            <param name="clearDrawableArea">Should the drawable area be cleared before the redraw</param>
+            <param name="changableText">Should the changable text collection be used or the fixed text collection</param>
+        </member>
+        <member name="T:CGL.Printables.Text">
+            <summary>
+            Collection of <see cref="T:CGL.Printables.Drawable"/>s that can be wrapped
+            </summary>
+        </member>
+        <member name="P:CGL.Printables.Text.StartPosition">
+            <summary>
+            Where should the text start to be rendered
+            </summary>
+        </member>
+        <member name="P:CGL.Printables.Text.Content">
+            <summary>
+            Content of the text (letters)
+            </summary>
+        </member>
+        <member name="P:CGL.Printables.Text.Orientation">
+            <summary>
+            Text orientation / render direction
+            </summary>
+        </member>
+        <member name="P:CGL.Printables.Text.Wrap">
+            <summary>
+            Flag to indicate if the text should be wrapped or not
+            </summary>
+        </member>
+        <member name="M:CGL.Printables.Text.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Printables.Text"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Printables.Text.#ctor(System.Collections.Generic.IEnumerable{CGL.Printables.Drawable})">
+            <summary>
+            Generates a <see cref="T:CGL.Printables.Text"/> instance with the specified content
+            </summary>
+            <param name="content">Content of the text (letters)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.Text.#ctor(CGL.Printables.Drawable[])">
+            <summary>
+            Generates a <see cref="T:CGL.Printables.Text"/> instance with the specified content
+            </summary>
+            <param name="content">Content of the text (letters)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.Text.#ctor(System.String,System.ConsoleColor)">
+            <summary>
+            Generates a <see cref="T:CGL.Printables.Text"/> instance with the specified content and its color
+            </summary>
+            <param name="content">Content of the text (letters)</param>
+            <param name="color">Color of the content</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.Text.#ctor(CGL.Position,System.String,System.ConsoleColor)">
+            <summary>
+            Generates a <see cref="T:CGL.Printables.Text"/> instance with the specified position, content and its color
+            </summary>
+            <param name="startPosition">Where should the text start to be rendered</param>
+            <param name="content">Content of the text (letters)</param>
+            <param name="color">Color of the content</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.Text.SetContent(CGL.Position,System.String,System.ConsoleColor)">
+            <summary>
+            Sets the content with a specified color at a specified location
+            </summary>
+            <param name="startPosition">Where should the text start to be rendered</param>
+            <param name="content">Content of the text (letters)</param>
+            <param name="color">Color of the content</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.Text.SetContent(System.String,System.ConsoleColor)">
+            <summary>
+            Sets the content with a specified color
+            </summary>
+            <param name="content">Content of the text (letters)</param>
+            <param name="color">Color of the content</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.Text.SetContent(System.Collections.Generic.IEnumerable{CGL.Printables.Drawable})">
+            <summary>
+            Sets the content to a collection of letters
+            </summary>
+            <param name="content">Content of the text (letters)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.Text.GetWrappedText(CGL.Rectangle,System.Boolean,System.Int32@)">
+            <summary>
+            Wraps the content based on a rectangle
+            </summary>
+            <param name="limitingRectangle">Rectangle that is used for wrapping logic</param>
+            <param name="useStartPositionFromRectangle">Should the <see cref="P:CGL.Rectangle.StartPosition"/> of the
+            <paramref name="limitingRectangle"/> be used or the <see cref="P:CGL.Printables.Text.StartPosition"/> for the
+            text rendering starting location</param>
+            <param name="wrapCount">How many lines were wrapped</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printables.Text.GetWrappedText(CGL.Rectangle,CGL.Position,System.Int32@)">
+            <summary>
+            Wraps the content based on a rectangle
+            </summary>
+            <param name="limitingRectangle">Rectangle that is used for wrapping logic</param>
+            <param name="startPosition">Text rendering starting location</param>
+            <param name="wrapCount">How many lines were wrapped</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.Printer">
+            <summary>
+            Used to print entities in a specified area
+            </summary>
+        </member>
+        <member name="P:CGL.Printer.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets the entity at the given position. If there isn't an entity there,
+            null is returned
+            </summary>
+            <param name="x">X coordinate of the entity to find</param>
+            <param name="y">Y coordinate of the entity to find</param>
+        </member>
+        <member name="P:CGL.Printer.Item(CGL.Position)">
+            <summary>
+            Gets the entity at the given position. If there isn't an entity there,
+            null is returned
+            </summary>
+            <param name="position">Position of the entity to find</param>
+        </member>
+        <member name="P:CGL.Printer.Entities">
+            <summary>
+            Sets the entity collection that is used for drawing
+            </summary>
+        </member>
+        <member name="P:CGL.Printer.EmptyCharGraphics">
+            <summary>
+            If there is an entity within the drawable area that isn't within the printable bounds,
+            it will be drawn with this
+            </summary>
+        </member>
+        <member name="P:CGL.Printer.PrintableBounds">
+            <summary>
+            Bounds of the area that can be printed
+            </summary>
+        </member>
+        <member name="M:CGL.Printer.#ctor(CGL.Rectangle,CGL.Bounds2D)">
+            <summary>
+            Generates a <see cref="T:CGL.Printer"/> instance with the specified rendered area and printable bounds
+            </summary>
+            <param name="renderedArea">Area that is printed on the screen</param>
+            <param name="printableBounds">Bounds of the area that can be printed</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printer.#ctor(CGL.Rectangle,CGL.Bounds2D,System.Collections.Generic.IEnumerable{CGL.Entities.Entity})">
+            <summary>
+            Generates a <see cref="T:CGL.Printer"/> instance with the specified rendered area, printable bounds and entities
+            </summary>
+            <param name="renderedArea">Area that is printed on the screen</param>
+            <param name="printableBounds">Bounds of the area that can be printed</param>
+            <param name="entities">Entities that will be printed</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printer.#ctor(CGL.Rectangle)">
+            <summary>
+            Generates a <see cref="T:CGL.Printer"/> instance with the specified rendered area.
+            Printable bounds are the same as the rendered area (no limits are set on printing)
+            </summary>
+            <param name="renderedArea">Area that is printed on the screen</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printer.#ctor(CGL.Rectangle,System.Collections.Generic.IEnumerable{CGL.Entities.Entity})">
+            <summary>
+            Generates a <see cref="T:CGL.Printer"/> instance with the specified rendered area and entities.
+            Printable bounds are the same as the rendered area (no limits are set on printing)
+            </summary>
+            <param name="renderedArea">Area that is printed on the screen</param>
+            <param name="entities">Entities that will be printed</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printer.ClearDrawableArea">
+            <summary>
+            Clears the drawable / rendered area
+            </summary>
+        </member>
+        <member name="M:CGL.Printer.DrawAllStoredEntities">
+            <summary>
+            Draws all the entities stored internally (either using <see cref="M:CGL.Printer.DrawEntities(System.Collections.Generic.IEnumerable{CGL.Entities.Entity},System.Nullable{System.Boolean})"/>
+            that has the option to set the collection or <see cref="M:CGL.Printer.Draw(CGL.Entities.Entity)"/> that adds the entity to that position
+            or updates the existing one)
+            </summary>
+        </member>
+        <member name="M:CGL.Printer.DrawEntities(System.Collections.Generic.IEnumerable{CGL.Entities.Entity},System.Nullable{System.Boolean})">
+            <summary>
+            Draws the given entities on the screen (the ones that are within the drawable / rendered area).
+            If an entity is in the printable bounds, its graphics will be used, 
+            otherwise the <see cref="P:CGL.Printer.EmptyCharGraphics"/> will be used
+            </summary>
+            <param name="entities">Entities to draw</param>
+            <param name="setEntitiesProp">Should the entities collection be set? if this is true,
+            it will be set, if this is null, it will be set only if it is null, otherwise, it won't be set</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Printer.Draw(CGL.Entities.Entity)">
+            <summary>
+            Draws an entity on the screen if it is within the drawable / rendered area.
+            If it is in the printable bounds, its graphics will be used, 
+            otherwise the <see cref="P:CGL.Printer.EmptyCharGraphics"/> will be used
+            </summary>
+            <param name="entity">Entity to draw</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.Game">
+            <summary>
+            Manages all the components that a game will have
+            </summary>
+        </member>
+        <member name="F:CGL.Game.board">
+            <summary>
+            Game board / Terrain
+            </summary>
+        </member>
+        <member name="F:CGL.Game.keyPressActions">
+            <summary>
+            Collection of actions that occurr on certain keypress combinations
+            </summary>
+        </member>
+        <member name="M:CGL.Game.#ctor(CGL.Rectangle,System.Collections.Generic.IEnumerable{CGL.Entities.Entity},CGL.Board.Tile)">
+            <summary>
+            Generates a <see cref="T:CGL.Game"/> instance with entities that will fill the board
+            and a tile that will be used to replace tiles that are removed from the board
+            </summary>
+            <param name="gameRenderArea">Area that is printed on the screen</param>
+            <param name="entities">Entities that will be placed onto the board</param>
+            <param name="replacementTile">Tile used to replace the deleted tiles (can be null which means nothing
+            will replace the removed tiles)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Game.#ctor(CGL.Rectangle,CGL.Graphics,CGL.Graphics)">
+            <summary>
+            Generates a <see cref="T:CGL.Game"/> instance with tile chunk that will fill the board
+            </summary>
+            <param name="gameRenderArea">Area that is printed on the screen</param>
+            <param name="initialBoardCharGraphics">Walkable tile graphics</param>
+            <param name="initialBorderGraphics">Border tile graphics (if you don't want a border, leave this null)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Game.Exit(CGL.Printables.Text)">
+            <summary>
+            Used for displaying a message on game exit (waits for key press and then exits)
+            </summary>
+            <param name="exitMessage">Message displayed when the user wants to exit</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Game.Initialize">
+            <summary>
+            Occurs before the game starts
+            <para>By default draws the board</para>
+            </summary>
+        </member>
+        <member name="M:CGL.Game.OnKeyPressed(System.ConsoleKeyInfo)">
+            <summary>
+            Occurs when the user presses a key (or key combination)
+            </summary>
+            <param name="key">Information about the keypress</param>
+        </member>
+        <member name="M:CGL.Game.LoopStart">
+            <summary>
+            Occurs at the start of game loop
+            </summary>
+        </member>
+        <member name="M:CGL.Game.LoopEnd">
+            <summary>
+            Occurs at the end of game loop
+            </summary>
+        </member>
+        <member name="M:CGL.Game.EntityMoved(System.Object,CGL.EntityMovementEventArgs)">
+            <summary>
+            Occurs when an entity successfully finishes the movement
+            </summary>
+            <param name="sender">Object that invoked the event</param>
+            <param name="e">Arguments for the event</param>
+        </member>
+        <member name="M:CGL.Game.EntityAboutToMove(System.Object,CGL.EntityMovementEventArgs)">
+            <summary>
+            Occurs when an entity is about to move
+            </summary>
+            <param name="sender">Object that invoked the event</param>
+            <param name="e">Arguments for the event</param>
+        </member>
+        <member name="T:CGL.UnknownEnumValueException">
+            <summary>
+            Exception that should be thrown when an unknown enum value was specified
+            </summary>
+        </member>
+        <member name="M:CGL.UnknownEnumValueException.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.UnknownEnumValueException"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.UnknownEnumValueException.#ctor(System.String)">
+            <summary>
+            Generates a <see cref="T:CGL.UnknownEnumValueException"/> instance with a specified message
+            </summary>
+        </member>
+        <member name="T:CGL.Extensions">
+            <summary>
+            Collection of helpful extensions
+            </summary>
+        </member>
+        <member name="M:CGL.Extensions.ThrowIfNull``1(``0,System.String)">
+            <summary>
+            Throw helper for parameters that throws <see cref="T:System.ArgumentNullException"/> if the
+            parameter's value is null
+            </summary>
+            <typeparam name="T">Parameter's type</typeparam>
+            <param name="parameterToTest">Parameter's value</param>
+            <param name="parameterName">Parameter's name</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Extensions.Update``1(System.Collections.Generic.IEnumerable{``0},``0,System.Func{``0,System.Boolean},System.Boolean)">
+            <summary>
+            Returns an updated collection based on a condition
+            </summary>
+            <typeparam name="T">Collection type</typeparam>
+            <param name="collection">Collection to update</param>
+            <param name="item">Item to put instead of the one that met the condition</param>
+            <param name="condition">Condition for the update</param>
+            <param name="updateOnlyOneRecord">Should only the first record that matches the condition be updated</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Extensions.Update``1(System.Collections.Generic.IList{``0},``0,System.Func{``0,System.Boolean},System.Boolean)">
+            <summary>
+            Updates the list based on a condition and returns how many items were updated
+            </summary>
+            <typeparam name="T">Collection type</typeparam>
+            <param name="collection">Collection to update</param>
+            <param name="item">Item to put instead of the one that met the condition</param>
+            <param name="condition">Condition for the update</param>
+            <param name="updateOnlyOneRecord">Should only the first record that matches the condition be updated</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Extensions.Between(System.Double,System.Double,System.Double,CGL.InclusionOptions)">
+            <summary>
+            Determines if a number is in the interval
+            </summary>
+            <param name="number">Number to test</param>
+            <param name="left">Left side of the interval</param>
+            <param name="right">Right side of the interval</param>
+            <param name="options">Interval inclusion option</param>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Extensions.Between(System.Int32,System.Double,System.Double,CGL.InclusionOptions)">
+            <summary>
+            Determines if a number is in the interval
+            </summary>
+            <param name="number">Number to test</param>
+            <param name="left">Left side of the interval</param>
+            <param name="right">Right side of the interval</param>
+            <param name="options">Interval inclusion option</param>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Extensions.ChooseOption``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Boolean,System.String,System.Boolean)">
+            <summary>
+            Menu that allows the user to select one of the options. Keys that are used to interact with the menu:
+            <para><see cref="F:System.ConsoleKey.Enter"/>: confirms the choice and returns the chosen option as index or ordinal number 
+            (based on the parameter <paramref name="index"/>)</para>
+            <para><see cref="F:System.ConsoleKey.W"/> or <see cref="F:System.ConsoleKey.UpArrow"/>: Move up</para>
+            <para><see cref="F:System.ConsoleKey.S"/> or <see cref="F:System.ConsoleKey.DownArrow"/>: Move down</para>
+            </summary>
+            <typeparam name="T">Collection type</typeparam>
+            <param name="options">Collection with options (ToString() is used for displaying the options)</param>
+            <param name="title">Menu header</param>
+            <param name="index">Should the index be returned or the ordinal number of the chosen option</param>
+            <param name="message">Optional message to display under the title / header</param>
+            <param name="clearAfter">Should the console be cleared after an option is chosen</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.Log">
+            <summary>
+            Used for logging to a file
+            </summary>
+        </member>
+        <member name="P:CGL.Log.LogPath">
+            <summary>
+            Path to the log file
+            </summary>
+        </member>
+        <member name="P:CGL.Log.LogChar">
+            <summary>
+            Character used for "lines" in the log (e.g. === Title ===)
+            </summary>
+        </member>
+        <member name="P:CGL.Log.OpenOnWrite">
+            <summary>
+            Should the log file be opened once an entry has been written to it
+            </summary>
+        </member>
+        <member name="M:CGL.Log.WriteEntry(System.String,System.String)">
+            <summary>
+            Writes an entry into the log file that contains the date and time when it was written,
+            a title and the message
+            </summary>
+            <param name="title">Title of the entry</param>
+            <param name="message">Message of the entry</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Log.WriteEntry(System.Exception)">
+            <summary>
+            Writes an entry into the log file that describes an exception that occurred
+            </summary>
+            <param name="exception">Exception to log</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Log.WriteLine(System.String)">
+            <summary>
+            Writes a line of text into the log
+            </summary>
+            <param name="line">Text to write to the log</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Log.Clear">
+            <summary>
+            Clears the contents of the file
+            </summary>
+        </member>
+        <member name="T:CGL.Utils">
+            <summary>
+            Collection of various helpful utilities
+            </summary>
+        </member>
+        <member name="P:CGL.Utils.Rng">
+            <summary>
+            Random Number Generator
+            </summary>
+        </member>
+        <member name="M:CGL.Utils.ReadInt(System.String,System.Int32,System.Int32)">
+            <summary>
+            Asks the user to enter an integer until they enter one that is within the given range
+            </summary>
+            <param name="message">Input description</param>
+            <param name="min">Minimum integer that the user can enter</param>
+            <param name="max">Maximum integer that the user can enter</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.Read``1(System.String,``0[])">
+            <summary>
+            Asks the user to enter a value of type <typeparamref name="T"/>. It uses
+            the Parse method that takes in a string as a parameter so in order to use this method, type
+            <typeparamref name="T"/> has to have a static method like <see cref="M:System.Int32.Parse(System.String)"/>
+            </summary>
+            <typeparam name="T">Type that the user should enter</typeparam>
+            <param name="message"></param>
+            <param name="allowedOptions"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.Draw(System.Collections.Generic.IEnumerable{CGL.Printables.Drawable},System.Boolean)">
+            <summary>
+            Draws text onto the screen
+            </summary>
+            <param name="text">Text to draw</param>
+            <param name="resetColor">Should the color be reset after the drawing is finished</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.Draw(CGL.Entities.Entity,System.Boolean)">
+            <summary>
+            Draws an entity onto the screen
+            </summary>
+            <param name="entity">Entity to draw</param>
+            <param name="resetColor">Should the color be reset after the drawing is finished</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.Draw(CGL.Graphics,System.Boolean)">
+            <summary>
+            Draws graphics object onto the screen
+            </summary>
+            <param name="graphics">Graphics object to draw</param>
+            <param name="resetColor">Should the color be reset after the drawing is finished</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.Draw(System.String,System.ConsoleColor,System.Boolean,System.Boolean)">
+            <summary>
+            Draws text onto the screen in a certain color
+            </summary>
+            <param name="text">Text to draw</param>
+            <param name="color">Drawing color</param>
+            <param name="resetColor">Should the color be reset after the drawing is finished</param>
+            <param name="appendNewLine">Should a new line be added after the text is drawn</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.PrintUnderlined(System.Boolean,System.Boolean,System.String,System.Char,System.ConsoleColor,System.ConsoleColor)">
+            <summary>
+            Prints an underlined message
+            </summary>
+            <param name="addLineBefore">Should a line be added before the message</param>
+            <param name="addLineAfter">Should a line be added after the message</param>
+            <param name="message">Message to print</param>
+            <param name="underline">Character used to underline the message</param>
+            <param name="messageColor">Color of the message</param>
+            <param name="underlineColor">Color of the underline character</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.PrintUnderlined(System.Boolean,System.Boolean,System.String,System.Char)">
+            <summary>
+            Prints an underlined message
+            </summary>
+            <param name="addLineBefore">Should a line be added before the message</param>
+            <param name="addLineAfter">Should a line be added after the message</param>
+            <param name="message">Message to print</param>
+            <param name="underline">Character used to underline the message</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.PrintUnderlined(System.String,System.Char)">
+            <summary>
+            Prints an underlined message
+            </summary>
+            <param name="message">Message to print</param>
+            <param name="underline">Character used to underline the message</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.GetRandomEnumValue``1(``0[])">
+            <summary>
+            Generates a random enum value from a given enum type
+            </summary>
+            <typeparam name="TEnum">An enum type</typeparam>
+            <param name="exclusions">Optionally passed in collection of unwanted generated values</param>
+        </member>
+        <member name="M:CGL.Utils.GenerateTileChunk(CGL.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,CGL.Graphics)">
+            <summary>
+            Generates a chunk of walkable tiles in based on the given parameters that can be surrounded by a border
+            </summary>
+            <param name="graphics">Walkable tile graphics</param>
+            <param name="startX">Where to start the tiles on the X axis</param>
+            <param name="startY">Where to start the tiles on the Y axis</param>
+            <param name="width">Width of the tile chunk</param>
+            <param name="height">Height of the tile chunk</param>
+            <param name="borderGraphics">Border tile graphics (if you don't want a border, leave this null)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.GenerateTileChunk(CGL.Graphics,CGL.Rectangle,CGL.Graphics)">
+            <summary>
+            Generates a chunk of walkable tiles in based on the given parameters that can be surrounded by a border
+            </summary>
+            <param name="graphics">Walkable tile graphics</param>
+            <param name="tileChunkArea">Area where the tile chunk will be generated</param>
+            <param name="borderGraphics">Border tile graphics (if you don't want a border, leave this null)</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Utils.ThrowIfNull(System.ValueTuple{System.Object,System.String}[])">
+            <summary>
+            Helper for throwing <see cref="T:System.ArgumentNullException"/> on multiple parameters
+            </summary>
+            <param name="paramsToTest">Parameters to check for null values</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.Bounds">
+            <summary>
+            1D boundaries
+            </summary>
+        </member>
+        <member name="P:CGL.Bounds.Min">
+            <summary>
+            Minimum value that is allowed
+            </summary>
+        </member>
+        <member name="P:CGL.Bounds.Max">
+            <summary>
+            Maximum value that is allowed
+            </summary>
+        </member>
+        <member name="M:CGL.Bounds.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Bounds"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Bounds.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Generates a <see cref="T:CGL.Bounds"/> instance with specified minimum and maximum
+            </summary>
+            <param name="min">Minimum value that is allowed</param>
+            <param name="max">Maximum value that is allowed</param>
+        </member>
+        <member name="M:CGL.Bounds.op_Subtraction(CGL.Bounds,System.Int32)">
+            <summary>
+            Subtraction
+            </summary>
+            <param name="bounds">Subtrahend</param>
+            <param name="amount">Amount to subtract</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Bounds.op_Addition(CGL.Bounds,System.Int32)">
+            <summary>
+            Addition
+            </summary>
+            <param name="bounds">Addend</param>
+            <param name="amount">Amount to add</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Bounds.op_Multiply(CGL.Bounds,System.Int32)">
+            <summary>
+            Multiplication
+            </summary>
+            <param name="bounds">Multiplier</param>
+            <param name="amount">Amount to multiply by</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Bounds.op_Division(CGL.Bounds,System.Int32)">
+            <summary>
+            Division
+            </summary>
+            <param name="bounds">Divisor</param>
+            <param name="amount">Amount to divide by</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Bounds.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object
+            </summary>
+            <param name="obj">The object to compare with the current object</param>
+        </member>
+        <member name="M:CGL.Bounds.op_Equality(CGL.Bounds,CGL.Bounds)">
+            <summary>
+            Determines whether the specified object instances are considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Bounds.op_Inequality(CGL.Bounds,CGL.Bounds)">
+            <summary>
+            Determines whether the specified object instances are not considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Bounds.GetHashCode">
+            <summary>
+            Returns the hash code for the value of this instance
+            </summary>
+        </member>
+        <member name="M:CGL.Bounds.ToString">
+            <summary>
+            Returns a string that represents the current object
+            </summary>
+        </member>
+        <member name="T:CGL.Bounds2D">
+            <summary>
+            2D boundaries
+            </summary>
+        </member>
+        <member name="P:CGL.Bounds2D.X">
+            <summary>
+            Bounds on the X axis
+            </summary>
+        </member>
+        <member name="P:CGL.Bounds2D.Y">
+            <summary>
+            Bounds on the Y axis
+            </summary>
+        </member>
+        <member name="M:CGL.Bounds2D.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Bounds2D"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Bounds2D.#ctor(CGL.Bounds,CGL.Bounds)">
+            <summary>
+            Generates a <see cref="T:CGL.Bounds2D"/> instance with specified x and y axis bounds
+            </summary>
+            <param name="xBounds">Bounds on the X axis</param>
+            <param name="yBounds">Bounds on the Y axis</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Bounds2D.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Generates a <see cref="T:CGL.Bounds2D"/> instance with specified x and y axis bounds
+            </summary>
+            <param name="minX">Minimum X axis value that is allowed</param>
+            <param name="maxX">Maximum X axis value that is allowed</param>
+            <param name="minY">Minimum Y axis value that is allowed</param>
+            <param name="maxY">Maximum Y axis value that is allowed</param>
+        </member>
+        <member name="M:CGL.Bounds2D.#ctor(CGL.Rectangle)">
+            <summary>
+            Generates a <see cref="T:CGL.Bounds2D"/> instance with specified x and y axis bounds
+            </summary>
+            <param name="rectangle">Rectangle that represents 2D bounds</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Bounds2D.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object
+            </summary>
+            <param name="obj">The object to compare with the current object</param>
+        </member>
+        <member name="M:CGL.Bounds2D.op_Equality(CGL.Bounds2D,CGL.Bounds2D)">
+            <summary>
+            Determines whether the specified object instances are considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Bounds2D.op_Inequality(CGL.Bounds2D,CGL.Bounds2D)">
+            <summary>
+            Determines whether the specified object instances are not considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Bounds2D.GetHashCode">
+            <summary>
+            Returns the hash code for the value of this instance
+            </summary>
+        </member>
+        <member name="M:CGL.Bounds2D.ToString">
+            <summary>
+            Returns a string that represents the current object
+            </summary>
+        </member>
+        <member name="T:CGL.Direction">
+            <summary>
+            Flags that define sides or directions
+            </summary>
+        </member>
+        <member name="F:CGL.Direction.None">
+            <summary>
+            No side or direction
+            </summary>
+        </member>
+        <member name="F:CGL.Direction.Up">
+            <summary>
+            Up or forward
+            </summary>
+        </member>
+        <member name="F:CGL.Direction.Down">
+            <summary>
+            Down or backward
+            </summary>
+        </member>
+        <member name="F:CGL.Direction.Left">
+            <summary>
+            Left or towards the left side
+            </summary>
+        </member>
+        <member name="F:CGL.Direction.Right">
+            <summary>
+            Right or towards the right side
+            </summary>
+        </member>
+        <member name="T:CGL.EditOperation">
+            <summary>
+            Operations usually done on the collections
+            </summary>
+        </member>
+        <member name="F:CGL.EditOperation.Create">
+            <summary>
+            Create / Add
+            </summary>
+        </member>
+        <member name="F:CGL.EditOperation.Update">
+            <summary>
+            Update / Edit
+            </summary>
+        </member>
+        <member name="F:CGL.EditOperation.Delete">
+            <summary>
+            Delete / Remove
+            </summary>
+        </member>
+        <member name="F:CGL.EditOperation.UpdateOrCreate">
+            <summary>
+            If it exists, update / edit it, otherwise, create / add it
+            </summary>
+        </member>
+        <member name="T:CGL.EntityMovementEventArgs">
+            <summary>
+            Event arguments for events that occurr on some type of entity movement
+            </summary>
+        </member>
+        <member name="P:CGL.EntityMovementEventArgs.Entity">
+            <summary>
+            Entity that caused the movement
+            </summary>
+        </member>
+        <member name="P:CGL.EntityMovementEventArgs.Tile">
+            <summary>
+            Tile that the entity was moved on or from
+            </summary>
+        </member>
+        <member name="M:CGL.EntityMovementEventArgs.#ctor(CGL.Entities.Entity,CGL.Board.Tile)">
+            <summary>
+            Generates a <see cref="T:CGL.EntityMovementEventArgs"/> instance with the entity that caused the movement
+            and the tile that it was moved on or that it moved from
+            </summary>
+            <param name="entity">Entity that caused the movement</param>
+            <param name="tile">Tile that the entity was moved on or from</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="T:CGL.Graphics">
+            <summary>
+            Colored character on the console
+            </summary>
+        </member>
+        <member name="P:CGL.Graphics.Color">
+            <summary>
+            Drawing color
+            </summary>
+        </member>
+        <member name="P:CGL.Graphics.Character">
+            <summary>
+            Character that will be drawn
+            </summary>
+        </member>
+        <member name="M:CGL.Graphics.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Graphics"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Graphics.#ctor(System.ConsoleColor,System.Char)">
+            <summary>
+            Generates a <see cref="T:CGL.Graphics"/> instance with specified character and its color
+            </summary>
+            <param name="color">Drawing color</param>
+            <param name="character">Character that will be drawn</param>
+        </member>
+        <member name="M:CGL.Graphics.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object
+            </summary>
+            <param name="obj">The object to compare with the current object</param>
+        </member>
+        <member name="M:CGL.Graphics.op_Equality(CGL.Graphics,CGL.Graphics)">
+            <summary>
+            Determines whether the specified object instances are considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Graphics.op_Inequality(CGL.Graphics,CGL.Graphics)">
+            <summary>
+            Determines whether the specified object instances are not considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Graphics.GetHashCode">
+            <summary>
+            Returns the hash code for the value of this instance
+            </summary>
+        </member>
+        <member name="M:CGL.Graphics.ToString">
+            <summary>
+            Returns a string that represents the current object
+            </summary>
+        </member>
+        <member name="T:CGL.InclusionOptions">
+            <summary>
+            Specifies interval inclusion
+            </summary>
+        </member>
+        <member name="F:CGL.InclusionOptions.BothInclusive">
+            <summary>
+            Both left and right are included
+            </summary>
+        </member>
+        <member name="F:CGL.InclusionOptions.OnlyLeftInclusive">
+            <summary>
+            Only left is included, right is excluded
+            </summary>
+        </member>
+        <member name="F:CGL.InclusionOptions.OnlyRightInclusive">
+            <summary>
+            Only right is included, left is excluded
+            </summary>
+        </member>
+        <member name="F:CGL.InclusionOptions.BothExclusive">
+            <summary>
+            Both left and right are excluded
+            </summary>
+        </member>
+        <member name="T:CGL.Position">
+            <summary>
+            Position / Location / Point
+            </summary>
+        </member>
+        <member name="P:CGL.Position.Zero">
+            <summary>
+            (0, 0)
+            </summary>
+        </member>
+        <member name="P:CGL.Position.X">
+            <summary>
+            Location on the X axis
+            </summary>
+        </member>
+        <member name="P:CGL.Position.Y">
+            <summary>
+            Location on the Y axis
+            </summary>
+        </member>
+        <member name="M:CGL.Position.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Position"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Position.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Generates a <see cref="T:CGL.Position"/> instance with specified x and y locations
+            </summary>
+            <param name="x">Location on the X axis</param>
+            <param name="y">Location on the Y axis</param>
+        </member>
+        <member name="M:CGL.Position.InsideRectangle(CGL.Rectangle)">
+            <summary>
+            Checks if the current position is within the specified rectangle
+            </summary>
+            <param name="rectangle">Rectangle to check if it contains the current position</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Position.InsideRectangleAfterMovement(CGL.Rectangle,CGL.Direction,System.Int32)">
+            <summary>
+            Checks if a position relative to the current one is within the specified boundaries
+            </summary>
+            <param name="rectangle">Rectangle to check if it contains the relative position</param>
+            <param name="direction">Direction in which the movement should occurr</param>
+            <param name="amount">How many tiles should the movement cover</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Position.InsideBounds(CGL.Bounds2D)">
+            <summary>
+            Checks if the current position is within the specified boundaries
+            </summary>
+            <param name="bounds">Bounds to check if they contain the current position</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Position.InsideBoundsAfterMovement(CGL.Bounds2D,CGL.Direction,System.Int32)">
+            <summary>
+            Checks if a position relative to the current one is within the specified boundaries
+            </summary>
+            <param name="bounds">Bounds to check if they contain the relative position</param>
+            <param name="direction">Direction in which the movement should occurr</param>
+            <param name="amount">How many tiles should the movement cover</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Position.MoveInRandomDirection(System.Int32)">
+            <summary>
+            Moves the current position in a random direction by a specific amount
+            </summary>
+            <param name="amount"></param>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Position.Move(CGL.Direction,System.Int32)">
+            <summary>
+            Moves the current position in a specific direction by a specific amount
+            </summary>
+            <param name="direction">Direction in which to move the current position</param>
+            <param name="amount">How many tiles to move</param>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Position.GetRelativePosition(CGL.Direction,System.Int32)">
+            <summary>
+            Gets position relative to the current position (this object isn't changed,
+            new position instance is created based on it)
+            </summary>
+            <param name="direction">Direction in which the movement should occurr</param>
+            <param name="amount">How many tiles should the movement cover</param>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Position.GetRelativePosition(System.Int32,System.Int32)">
+            <summary>
+            Gets position relative to the current position (this object isn't changed,
+            new position instance is created based on it)
+            </summary>
+            <param name="xMovement">Amount to move on the x axis</param>
+            <param name="yMovement">Amount to move on the y axis</param>
+        </member>
+        <member name="M:CGL.Position.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object
+            </summary>
+            <param name="obj">The object to compare with the current object</param>
+        </member>
+        <member name="M:CGL.Position.op_Equality(CGL.Position,CGL.Position)">
+            <summary>
+            Determines whether the specified object instances are considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Position.op_Inequality(CGL.Position,CGL.Position)">
+            <summary>
+            Determines whether the specified object instances are not considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Position.GetHashCode">
+            <summary>
+            Returns the hash code for the value of this instance
+            </summary>
+        </member>
+        <member name="M:CGL.Position.ToString">
+            <summary>
+            Returns a string that represents the current object
+            </summary>
+        </member>
+        <member name="T:CGL.Rectangle">
+            <summary>
+            Shape with a starting point, width and height
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.StartPosition">
+            <summary>
+            Position where the rectangle's top left corner is (usually where the drawing begins)
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.Width">
+            <summary>
+            Width of the rectangle
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.Height">
+            <summary>
+            Height of the rectangle
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.X">
+            <summary>
+            X coordinate of the <see cref="P:CGL.Rectangle.StartPosition"/>
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.Y">
+            <summary>
+            Y coordinate of the <see cref="P:CGL.Rectangle.StartPosition"/>
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.Right">
+            <summary>
+            X coordinate of the right side of the rectangle
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.Bottom">
+            <summary>
+            Y coordinate of the bottom side of the rectangle
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.TopLeft">
+            <summary>
+            Top left point of the rectangle
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.TopRight">
+            <summary>
+            Top Right point of the rectangle
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.BottomLeft">
+            <summary>
+            Bottom left point of the rectangle
+            </summary>
+        </member>
+        <member name="P:CGL.Rectangle.BottomRight">
+            <summary>
+            Bottom Right point of the rectangle
+            </summary>
+        </member>
+        <member name="M:CGL.Rectangle.#ctor">
+            <summary>
+            Generates a default <see cref="T:CGL.Rectangle"/> instance
+            </summary>
+        </member>
+        <member name="M:CGL.Rectangle.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Generates a <see cref="T:CGL.Rectangle"/> instance with the specified start position and size
+            </summary>
+            <param name="startX">X coordinate of the start position</param>
+            <param name="startY">Y coordinate of the start position</param>
+            <param name="width">Width of the rectangle</param>
+            <param name="height">Height of the rectangle</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Rectangle.#ctor(CGL.Position,System.Int32,System.Int32)">
+            <summary>
+            Generates a <see cref="T:CGL.Rectangle"/> instance with the specified start position and size
+            </summary>
+            <param name="startPosition">Position where the rectangle's top left corner is 
+            (usually where the drawing begins)</param>
+            <param name="width">Width of the rectangle</param>
+            <param name="height">Height of the rectangle</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Rectangle.SideIn(CGL.Rectangle,CGL.Direction,CGL.InclusionOptions)">
+            <summary>
+            Checks if a side of the other rectangle is inside the current one
+            </summary>
+            <param name="other">Other rectangle</param>
+            <param name="side">Side to check</param>
+            <param name="coordinateInclusion">How should the check be performed</param>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:CGL.UnknownEnumValueException"/>
+        </member>
+        <member name="M:CGL.Rectangle.FullyInside(CGL.Rectangle,CGL.InclusionOptions)">
+            <summary>
+            Checks if other rectangle is fully inside the current one
+            </summary>
+            <param name="other">Other rectangle</param>
+            <param name="coordinateInclusion">How should the check be performed</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Rectangle.Inside(CGL.Rectangle,System.Boolean,CGL.InclusionOptions)">
+            <summary>
+            Checks which sides of the other rectangle are inside the current one
+            </summary>
+            <param name="other">Other rectangle</param>
+            <param name="fullSideInsideCheck">Should the side be qualified as "inside"
+            if it is fully in or if it partially in</param>
+            <param name="coordinateInclusion">How should the check be performed</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Rectangle.Draw(CGL.Graphics)">
+            <summary>
+            Draws the rectangle at the <see cref="P:CGL.Rectangle.StartPosition"/> with the given graphics
+            </summary>
+            <param name="graphics">Graphics to draw the rectangle with</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Rectangle.Draw(CGL.Position,CGL.Graphics)">
+            <summary>
+            Draws the rectangle at the specified position with the given graphics
+            </summary>
+            <param name="startPosition">Position where the rectangle should be drawn</param>
+            <param name="graphics">Graphics to draw the rectangle with</param>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:CGL.Rectangle.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object
+            </summary>
+            <param name="obj">The object to compare with the current object</param>
+        </member>
+        <member name="M:CGL.Rectangle.op_Equality(CGL.Rectangle,CGL.Rectangle)">
+            <summary>
+            Determines whether the specified object instances are considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Rectangle.op_Inequality(CGL.Rectangle,CGL.Rectangle)">
+            <summary>
+            Determines whether the specified object instances are not considered equal
+            </summary>
+            <param name="left">The first object to compare</param>
+            <param name="right">The second object to compare</param>
+        </member>
+        <member name="M:CGL.Rectangle.GetHashCode">
+            <summary>
+            Returns the hash code for the value of this instance
+            </summary>
+        </member>
+        <member name="M:CGL.Rectangle.ToString">
+            <summary>
+            Returns a string that represents the current object
+            </summary>
+        </member>
+    </members>
+</doc>
