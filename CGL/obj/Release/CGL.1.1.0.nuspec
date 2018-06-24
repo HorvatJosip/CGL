@@ -15,7 +15,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\bin\Debug\netstandard2.0\CGL.dll" target="lib\netstandard2.0\CGL.dll" />
-    <file src="F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\bin\Debug\netstandard2.0\CGL.xml" target="lib\netstandard2.0\CGL.xml" />
+    <file src="F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\bin\Release\netstandard2.0\CGL.dll" target="lib\netstandard2.0\CGL.dll" />
   </files>
 </package>

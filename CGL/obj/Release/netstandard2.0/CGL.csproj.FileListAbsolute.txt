@@ -1,0 +1,8 @@
+F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\bin\Release\netstandard2.0\CGL.deps.json
+F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\bin\Release\netstandard2.0\CGL.dll
+F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\bin\Release\netstandard2.0\CGL.pdb
+F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2.0\CGL.csproj.CoreCompileInputs.cache
+F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2.0\CGL.AssemblyInfoInputs.cache
+F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2.0\CGL.AssemblyInfo.cs
+F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2.0\CGL.dll
+F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2.0\CGL.pdb

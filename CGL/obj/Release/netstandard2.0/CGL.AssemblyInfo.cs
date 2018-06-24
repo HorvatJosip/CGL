@@ -12,7 +12,7 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("Josip Horvat")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright ©  2018")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("C# Standard Library used to make console games in C#")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.0.0")]
