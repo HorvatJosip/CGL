@@ -6,3 +6,4 @@ F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2
 F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2.0\CGL.AssemblyInfo.cs
 F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2.0\CGL.dll
 F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2.0\CGL.pdb
+F:\Programiranje\C# Projects\Libraries\Standard\CGL\CGL\obj\Release\netstandard2.0\CGL.csprojAssemblyReference.cache

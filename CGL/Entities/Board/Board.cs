@@ -13,7 +13,7 @@ namespace CGL.Board
     {
         #region Fields
 
-        private HashSet<Entity> entities;
+        private List<Entity> entities;
         private Printer printer;
 
         #endregion
@@ -42,6 +42,21 @@ namespace CGL.Board
                     return null;
 
                 return entities.FirstOrDefault(entity => entity.Position == position);
+            }
+        }
+
+        /// <summary>
+        /// Gets the first entity from the board with the specified graphics
+        /// </summary>
+        /// <param name="graphics">Graphics of the entity to find</param>
+        public Entity this[Graphics graphics]
+        {
+            get
+            {
+                if (entities == null || graphics == null)
+                    return null;
+
+                return entities.FirstOrDefault(entity => entity.Graphics == graphics);
             }
         }
 
@@ -111,7 +126,7 @@ namespace CGL.Board
         {
             entities.ThrowIfNull(nameof(entities));
 
-            this.entities = new HashSet<Entity>(entities);
+            this.entities = entities.ToList();
             printer.Entities = entities;
 
             int minX = entities.Min(tile => tile?.Position?.X ?? int.MaxValue);
@@ -231,9 +246,9 @@ namespace CGL.Board
         public bool MoveEntity(Entity entity, Position position)
         {
             entity.ThrowIfNull(nameof(entity));
-            
+
             EntityAboutToMove?.Invoke(this, new EntityMovementEventArgs(entity, null));
-            
+
             var targetTile = printer[position] as Tile;
 
             if (targetTile == null || !(
@@ -302,8 +317,8 @@ namespace CGL.Board
                         ? new Tile(TileType.None, new Graphics(ConsoleColor.Black, ' '), entity.Position)
                         : new Tile(ReplacementTile, entity.Position);
 
-                    if (!emptyTile)
-                        entities.Add(tile);
+                    //if (!emptyTile)
+                    entities.Add(tile);
 
                     return printer.Draw(tile);
                 case EditOperation.UpdateOrCreate:
@@ -384,56 +399,42 @@ namespace CGL.Board
             }
         }
 
-        /// <summary>
-        /// Checks if an entity with the given graphics exists
-        /// </summary>
-        /// <param name="graphics">Graphics of the entity to find</param>
-        public bool Contains(Graphics graphics)
-        {
-            foreach (var entity in entities)
-                if (entity.Graphics == graphics)
-                    return true;
-
-            return false;
-        }
-
         #region Helpers
 
         private bool AddEntityIfItDoesntExist(Entity entity)
         {
-            if (!entities.Contains(entity))
-            {
-                entities.Add(entity);
+            if (this[entity.Position] != null)
+                return false;
 
-                #region Update bounds if needed
+            entities.Add(entity);
 
-                if (entity.X < TerrainBounds.X.Min)
-                    TerrainBounds.X.Min = entity.X;
-                if (entity.Y < TerrainBounds.Y.Min)
-                    TerrainBounds.Y.Min = entity.Y;
-                if (entity.X > TerrainBounds.X.Max)
-                    TerrainBounds.X.Max = entity.X;
-                if (entity.Y > TerrainBounds.Y.Max)
-                    TerrainBounds.Y.Max = entity.Y;
+            #region Update bounds if needed
 
-                #endregion
+            if (entity.X < TerrainBounds.X.Min)
+                TerrainBounds.X.Min = entity.X;
+            if (entity.Y < TerrainBounds.Y.Min)
+                TerrainBounds.Y.Min = entity.Y;
+            if (entity.X > TerrainBounds.X.Max)
+                TerrainBounds.X.Max = entity.X;
+            if (entity.Y > TerrainBounds.Y.Max)
+                TerrainBounds.Y.Max = entity.Y;
 
-                return true;
-            }
+            #endregion
 
-            return false;
+            return true;
         }
 
         private bool UpdateEntity(Entity entity)
         {
-            var entityToRemove = entities.FirstOrDefault(e => e.Position == entity.Position);
+            var entityToRemove = this[entity.Position];
 
             if (entityToRemove == null)
                 return false;
 
             entities.Remove(entityToRemove);
 
-            return entities.Add(entity);
+            entities.Add(entity);
+            return true;
         }
 
         #endregion

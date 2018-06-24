@@ -112,10 +112,9 @@ namespace CGL.DataPersistence
                 case EditOperation.Delete:
                     return RemoveSave(path);
                 case EditOperation.UpdateOrCreate:
-                    if (saveFiles.ContainsKey(path))
-                        return UpdateSave(path, data);
-                    else
-                        return AddSave(path, data);
+                    return UpdateSave(path, data)
+                        ? true
+                        : AddSave(path, data);
                 default:
                     throw new UnknownEnumValueException();
             }
@@ -149,7 +148,7 @@ namespace CGL.DataPersistence
             var saveFile = saveFiles.ElementAt(saveIndex);
 
             return FileManager.SaveData(saveFile.Key, saveFile.Value);
-        } 
+        }
 
         #endregion
 
@@ -194,8 +193,7 @@ namespace CGL.DataPersistence
                 try
                 {
                     File.Delete(path);
-                    saveFiles.Remove(path);
-                    return true;
+                    return saveFiles.Remove(path);
                 }
                 catch (Exception ex) { Log.WriteEntry(ex); }
             }
